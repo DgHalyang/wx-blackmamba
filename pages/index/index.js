@@ -6,13 +6,16 @@ Page({
     // 轮播图数组
     swiperList: [],
     // 导航数组
-    catesList:[]
+    catesList:[],
+    //楼层数据
+    floorList:[]
   },
   //页面开始加载就会触发
   onLoad: function (options) {
     // 发送请求
     this.getSwiperList();
     this.getCatesList();
+    this.getFloorList();
 
     //原生请求数据
     // var reqTask = wx.request({
@@ -50,6 +53,16 @@ Page({
       // 分类数据
       this.setData({
         catesList: result.data.message
+      })
+    })
+  },
+  //获取楼层数据
+  getFloorList () {
+    request({ url: 'https://api-hmugo-web.itheima.net/api/public/v1/home/floordata' })
+    .then(result => {
+      // 分类数据
+      this.setData({
+        floorList: result.data.message
       })
     })
   },

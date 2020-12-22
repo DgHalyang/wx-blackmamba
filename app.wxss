@@ -18,3 +18,7 @@ page{
     /*定义同意字体大小  假如设计稿为375px 1px=2rpx */
     font-size: 28rpx;
 }
+/* 图片默认样式 */
+image{
+    width: 100%;
+}

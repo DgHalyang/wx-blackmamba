@@ -1,2 +1,52 @@
-<!--pages/category/category.wxml-->
-<text>pages/category/category.wxml</text>
+<view class="cates">
+    <!-- 搜索框 组件 开始 -->
+    <SearchInput></SearchInput>
+    <!-- 搜索框 结束 -->
+    <view class="cates-container">
+        <!-- 左侧区域 -->
+        <scroll-view class="left-menu" scroll-y="{{true}}">
+            <view 
+            class="menu-item {{index===leftIndex?'active':''}}"
+            wx:for="{{leftMenuList}}"
+            wx:key="*this"
+            bindtap="leftTab"
+            data-index="{{index}}"
+            >
+            <!-- 保留关键字 *this 代表在 for 循环中的 item 本身，
+            这种表示需要 item 本身是一个唯一的字符串或者数字 -->
+                {{item}}
+            </view>
+        </scroll-view>
+        <!-- 右侧区域 -->
+        <scroll-view class="right-content" scroll-y="{{true}}">
+            <view 
+            class="goods-group"
+            wx:for="{{rightList}}"
+            wx:for-index="index1"
+            wx:for-item="item1"
+            >
+                <view class="goods-title">
+                    <!-- 分隔符 -->
+                    <text class="delimiter">/</text>
+                    <text class="title">{{item1.cat_name}}</text>
+                    <!-- 分隔符 -->
+                    <text class="delimiter">/</text>
+                </view>
+                <view class="good-list">
+                    <navigator
+                    open-type="navigate"
+                    wx:for="{{item1.children}}"
+                    wx:for-item="item2"
+                    wx:for-index="index2"
+                    wx:key="cat_id"
+                    >
+                        <image mode="widthFix" src="{{item2.cat_icon}}" />
+                        <view class="goods-name">
+                            {{item2.cat_name}}
+                        </view>
+                    </navigator>
+                </view>
+            </view>
+        </scroll-view>
+    </view>
+</view>
