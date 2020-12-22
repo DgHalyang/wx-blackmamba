@@ -7,14 +7,16 @@ Page({
    */
   data: {
     // 左侧菜单数据
-    leftMenuList:[],
+    leftMenuList: [],
     // 右侧商品数据
-    rightList:[],
+    rightList: [],
     // 左侧菜单点击
-    leftIndex:0,
+    leftIndex: 0,
+    //右侧滚动条顶部距离
+    scrollTop: 0,
   },
   // 接口的返回数据
-  Cates:[],
+  Cates: [],
 
   /**
    * 生命周期函数--监听页面加载
@@ -29,22 +31,21 @@ Page({
      * 2，没有数据则发送请求
      * 3, 有旧数据，但要判断是否有过期
      */
-    // 获取本地数据
+    // 获取是否有本地数据
     const Cates = wx.getStorageSync('cates');
-    console.log(Cates)
     if (!Cates) {
       this.getCates();
     } else {
       //有旧数据，判断是否过期
-      if(Date.now() - Cates.time > 1000*50) {
+      if (Date.now() - Cates.time > 1000 * 50) {
         this.getCates();
       } else {
         //使用旧数据
         this.Cates = Cates.data;
         //获取左边的菜单数据
-        let leftMenuList=this.Cates.map(item=>item.cat_name);
+        let leftMenuList = this.Cates.map(item => item.cat_name);
         //获取右边的商品数据
-        let rightList=this.Cates[0].children;
+        let rightList = this.Cates[0].children;
         this.setData({
           leftMenuList,
           rightList
@@ -57,33 +58,35 @@ Page({
     // 获取索引值
     let { index } = e.currentTarget.dataset;
     // 获取右侧数据
-    let rightList=this.Cates[index].children;
+    let rightList = this.Cates[index].children;
     this.setData({
-      leftIndex:index,
-      rightList
+      leftIndex: index,
+      rightList,
+      //重新设置 右侧内容滚动条的顶部距离
+      scrollTop: 0
     })
+
   },
 
-  //获取分类数据
-  getCates () {
-    request({ url: 'https://api-hmugo-web.itheima.net/api/public/v1/categories' })
-    .then(result => {
-      // 分类数据
-      this.Cates = result.data.message;
-      // console.log(this.Cates);
-      // 将数据本地存储，因为每次请求的数据很大
-      wx.setStorageSync("cates",{
-        time:Date.now(),
-        data:this.Cates
-      })
-      //获取左边的菜单数据
-      let leftMenuList=this.Cates.map(item=>item.cat_name);
-      //获取右边的商品数据
-      let rightList=this.Cates[0].children;
-      this.setData({
-        leftMenuList,
-        rightList
-      })
+  //async await 获取分类数据
+  async getCates() {
+    const result = await request({ url: '/categories' });
+    console.log(result);
+    // 分类数据
+    this.Cates = result;
+    // console.log(this.Cates);
+    // 将数据本地存储，因为每次请求的数据很大
+    wx.setStorageSync("cates", {
+      time: Date.now(),
+      data: this.Cates
+    })
+    //获取左边的菜单数据
+    let leftMenuList = this.Cates.map(item => item.cat_name);
+    //获取右边的商品数据
+    let rightList = this.Cates[0].children;
+    this.setData({
+      leftMenuList,
+      rightList
     })
   },
 

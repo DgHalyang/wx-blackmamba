@@ -4,7 +4,7 @@
     <!-- 搜索框 结束 -->
     <view class="cates-container">
         <!-- 左侧区域 -->
-        <scroll-view class="left-menu" scroll-y="{{true}}">
+        <scroll-view class="left-menu" scroll-y>
             <view 
             class="menu-item {{index===leftIndex?'active':''}}"
             wx:for="{{leftMenuList}}"
@@ -18,7 +18,7 @@
             </view>
         </scroll-view>
         <!-- 右侧区域 -->
-        <scroll-view class="right-content" scroll-y="{{true}}">
+        <scroll-view scroll-top="{{scrollTop}}" class="right-content" scroll-y>
             <view 
             class="goods-group"
             wx:for="{{rightList}}"
@@ -34,11 +34,11 @@
                 </view>
                 <view class="good-list">
                     <navigator
-                    open-type="navigate"
                     wx:for="{{item1.children}}"
                     wx:for-item="item2"
                     wx:for-index="index2"
                     wx:key="cat_id"
+                    url="/pages/goods_list/goods_list?cid={{item2.cat_id}}"
                     >
                         <image mode="widthFix" src="{{item2.cat_icon}}" />
                         <view class="goods-name">

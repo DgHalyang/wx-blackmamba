@@ -60,6 +60,7 @@
                 url="" 
                 hover-class="navigator-hover" 
                 open-type="navigate">
+                    <!-- 图片高度需要计算，看less文件 -->
                     <image mode="{{index2===0?'widthFix':'scaleToFill'}}" src="{{item2.image_src}}"></image>
                 </navigator>
             </view>

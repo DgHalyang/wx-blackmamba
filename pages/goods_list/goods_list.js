@@ -12,7 +12,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    // 获取参数id
+    console.log(options.id);
   },
 
   /**
