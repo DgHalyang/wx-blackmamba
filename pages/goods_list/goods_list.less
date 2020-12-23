@@ -1,0 +1,32 @@
+.first-tab{
+    .goods-item{
+        display: flex;
+        border-bottom: 2rpx solid #eee;
+        .left-img{
+            flex: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            image{
+                width: 70%;
+            }
+        }
+        .right-content{
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            // 两行出现省略号
+            .goods-name{
+                display: -webkit-box;
+                overflow: hidden;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+            }
+            .goods-price{
+                color: var(--themeColor);
+                font-size: 32rpx;
+            }
+        }
+    }
+}

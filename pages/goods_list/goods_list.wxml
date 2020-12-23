@@ -1,2 +1,31 @@
-<!--pages/goods_list/goods_list.wxml-->
-<text>pages/goods_list/goods_list.wxml</text>
+<view class="goods-list">
+    <!-- 搜索框 组件 开始 -->
+    <SearchInput></SearchInput>
+    <!-- 搜索框 结束 -->
+    <!-- 父组件像子组件传参 监听事件-->
+    <Tabs tabs="{{tabs}}" bindtabsItemChange="handTabsItemChangep">
+        <!-- 插槽 -->
+        <block wx:if="{{tabs[0].isActive}}">
+            <view class="first-tab">
+                <navigator 
+                class="goods-item"
+                wx:for="{{goodsList}}"
+                wx:key="goods_id"
+                url="/pages/goods_detail/goods_detail?goods_id={{item.goods_id}}"
+                >
+                    <!-- 左侧 图片容器 -->
+                    <view class="left-img">
+                        <image mode="widthFix" src="{{item.goods_small_logo?item.goods_small_logo:'http://image5.suning.cn/uimg/b2c/newcatentries/0000000000-000000000160455569_1_400x400.jpg'}}" />
+                    </view>
+                    <!-- 右侧 商品容器 -->
+                    <view class="right-content">
+                        <view class="goods-name">{{item.goods_name}}</view>
+                        <view class="goods-price">${{item.goods_price}}</view>
+                    </view>
+                </navigator>
+            </view>
+        </block>
+        <block wx:if="{{tabs[1].isActive}}">1</block>
+        <block wx:if="{{tabs[2].isActive}}">2</block>
+    </Tabs>
+</view>

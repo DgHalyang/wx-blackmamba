@@ -1,2 +1,56 @@
-<!--pages/goods_detail/goods_detail.wxml-->
-<text>pages/goods_detail/goods_detail.wxml</text>
+<view class="detail-swiper">
+    <swiper
+    autoplay="{{true}}"
+    circular="{{true}}"
+    indicator-dots="{{true}}"
+    >
+        <swiper-item
+        wx:for="{{goodsObj.pics}}"
+        wx:key="pics_id"
+        bindtap="handlePreviewImage"
+        data-url="{{item.pics_mid}}"
+        >
+            <image mode="widthFix" src="{{item.pics_mid}}"/>
+        </swiper-item>
+    </swiper>
+    <view class="goods-price">${{goodsObj.goods_price}}</view>
+    <view class="goods-name-box">
+        <view class="goods-name">{{goodsObj.goods_name}}</view>
+        <view class="goods-collect">
+            <text class="iconfont icon-qicheqianlian-"></text>
+            <view class="collect-text">收藏</view>
+        </view>
+    </view>
+    <view class="goods-info">
+        <view class="good-info-title">图文详情</view>
+        <view class="goods-info-content">
+            <!-- 富文本 -->
+            <rich-text class="" nodes="{{goodsObj.goods_introduce}}">
+            </rich-text>
+        </view>
+    </view>
+    <view class="bottom-tool">
+        <view class="tool-item">
+            <view class="iconfont icon-qicheqianlian-"></view>
+            <view>客服</view>
+            <button open-type="contact"></button>
+        </view>
+        <view class="tool-item">
+            <view class="iconfont icon-qicheqianlian-"></view>
+            <view>分享</view>
+            <button open-type="share"></button>
+        </view>
+        <!-- 购物车页面是tabbar页面 要用open-type="switchTab" -->
+        <navigator open-type="switchTab" url="/pages/cart/cart" class="tool-item">
+            <view class="iconfont icon-qicheqianlian-"></view>
+            <view>购物车</view>
+        </navigator>
+        <!-- 加入购物车 -->
+        <view class="tool-item btn-car" bindtap="handleAddCart">
+            加入购物车
+        </view>
+        <view class="tool-item btn-buy">
+            立即购买
+        </view>
+    </view>
+</view>
