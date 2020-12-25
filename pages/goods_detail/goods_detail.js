@@ -54,6 +54,8 @@ Page({
     if(index === -1) {
       //不存在 第一次添加 添加一个参数num 值为1
       this.GoodsInfo.num = 1;
+      //一开始默认选中
+      this.GoodsInfo.checked=true
       cart.push(this.GoodsInfo);
     } else {
       //存在 +1
