@@ -90,6 +90,13 @@
 					"id": -1,
 					"name": "支付",
 					"pathName": "pages/pay/pay",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "获取权限",
+					"pathName": "pages/auth/auth",
 					"scene": null
 				}
 			]

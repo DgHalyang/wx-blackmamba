@@ -1,2 +1,3 @@
-<!--pages/auth/auth.wxml-->
-<text>pages/auth/auth.wxml</text>
+<button plain="{{true}}" bindgetuserinfo="getUserInfo" type="primary" open-type="getUserInfo">
+    获取权限
+</button>

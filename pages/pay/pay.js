@@ -1,8 +1,21 @@
+/**
+ * 微信支付
+ * 1，哪些人 哪些账号 可以实现微信支付
+ * (1)企业账号
+ * (2)企业账号的小程序后台中 必须给开发者添上白名单
+ *   1，一个appid可以同时绑定多个开发者
+ *   2，这些开发者就可以公共这个appid和它的开发权限
+ * 
+ * 点击支付按钮
+ * 1，先判断是否有token
+ * 2，没有就跳到授权页面，获取token
+ */
+
 // 引入封装为Promise方式的微信api
-import { getSetting, chooseAddress, openSetting, showModal, showToast } from '../../utils/asyncWx.js';
+import { requestPayment, getSetting, chooseAddress, openSetting, showModal, showToast } from '../../utils/asyncWx.js';
+import { request } from '../../request/index.js'
 
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -44,6 +57,71 @@ Page({
       totalPrice
     })
     wx.setStorageSync("cart", cart);
+  },
+
+  //支付
+  async handlePay(){
+    try {
+          //获取缓存中的token
+    const token = wx.getStorageSync('token');
+    if(!token){
+      //跳转到获取token的页面
+      wx.navigateTo({
+        url: '/pages/auth/auth',
+      });
+    }
+    // 有token时创建订单
+    // 准备请求头参数
+    const header = {Authorization:token};
+    // 准备请求体参数
+    const order_price = this.data.totalPrice;
+    const consignee_addr = this.data.address.all;
+    const cart = this.data.cart;
+    let goods = [];
+    cart.forEach(item=>goods.push({
+      goods_id:item.goods_id,
+      goods_number:item.num,
+      goods_price:item.goods_price
+    }))
+    // 发送请求创建订单 获取订单号
+    const orderParams = { order_price, consignee_addr, goods}
+    const { order_number } = await request(
+      {
+        url:"/my/orders/create",
+        method:"POST",
+        data:orderParams,
+        header
+      })
+    // 5 发起 预支付接口
+    const { pay } = await request(
+      { 
+        url: "/my/orders/req_unifiedorder", 
+        method: "POST", 
+        data: { order_number },
+        header 
+      });
+    // console.log(pay)
+    // 发起微信支付
+    await requestPayment(pay);
+    // console.log(res)
+    // 查询后台 订单状态
+    const res = await request(
+      { 
+        url: "/my/orders/chkOrder", 
+        method: "POST", 
+        data: { order_number } 
+      });
+    // 支付成功
+    await showToast({ title: "支付成功" });
+    // 8 支付成功了 跳转到订单页面
+    wx.navigateTo({
+      url: '/pages/order/order'
+    });
+    } catch (error) {
+      console.log(error)
+      // 支付失败
+      await showToast({ title: "支付失败" })
+    }
   },
 
   /**

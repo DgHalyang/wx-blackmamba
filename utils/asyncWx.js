@@ -73,3 +73,33 @@ export const showToast = (title) => {
         });
     })
 }
+
+//Promise形式的 login  可以传递文字
+export const login = () => {
+    return new Promise((resolve, reject) => {
+        wx.login({
+            timeout:10000,
+            success: (result)=>{
+                resolve(result)
+            },
+            fail: (err)=>{
+                reject(err);
+            }
+        });
+    })
+}
+
+//Promise形式的 requestPayment 微信支付  可以传递文字
+export const requestPayment = (pay) => {
+    return new Promise((resolve, reject) => {
+        wx.requestPayment({
+            ...pay,
+            success: (result)=>{
+                resolve(result)
+            },
+            fail: (err)=>{
+                reject(err);
+            }
+          });
+    })
+}
