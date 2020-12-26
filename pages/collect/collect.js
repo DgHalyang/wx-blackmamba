@@ -5,7 +5,30 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    //收藏列表
+    collect:[],
+    tabs: [
+      {
+        id: 0,
+        value: "商品收藏",
+        isActive: true
+      },
+      {
+        id: 1,
+        value: "品牌收藏",
+        isActive: false
+      },
+      {
+        id: 2,
+        value: "店铺收藏",
+        isActive: false
+      },
+      {
+        id: 3,
+        value: "浏览器足迹",
+        isActive: false
+      }
+    ]
   },
 
   /**
@@ -16,16 +39,33 @@ Page({
   },
 
   /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    //获取缓存中收藏的列表
+    const collect=wx.getStorageSync("collect")||[];
+    this.setData({
+      collect
+    });
+  },
+
+  // 获取被点击的标题索引
+  handleTabsItemChange(e) {
+    // 1 获取被点击的标题索引
+    const { index } = e.detail;
+    // 2 修改源数组
+    let { tabs } = this.data;
+    tabs.forEach((v, i) => i === index ? v.isActive = true : v.isActive = false);
+    // 3 赋值到data中
+    this.setData({
+      tabs
+    })
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
 
   },
 

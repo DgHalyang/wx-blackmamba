@@ -38,6 +38,9 @@ page {
   align-items: center;
   border-left: 1rpx solid #000;
 }
+.detail-swiper .goods-name-box .goods-collect .icon-shoucang1 {
+  color: orangered;
+}
 .detail-swiper .goods-info .good-info-title {
   font-size: 32rpx;
   color: var(--themeColor);

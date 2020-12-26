@@ -5,7 +5,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    userinfo:{},
+    //被收藏商品的数量
+    collectNums:0
   },
 
   /**
@@ -26,7 +28,14 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    //获取用户信息
+    const userinfo = wx.getStorageSync("userinfo");
+    // 获取已经收藏的数组
+    const collect=wx.getStorageSync("collect")||[];
+    this.setData({
+      userinfo,
+      collectNums:collect.length
+    });
   },
 
   /**

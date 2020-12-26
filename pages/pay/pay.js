@@ -62,7 +62,7 @@ Page({
   //支付
   async handlePay(){
     try {
-          //获取缓存中的token
+    //获取缓存中的token
     const token = wx.getStorageSync('token');
     if(!token){
       //跳转到获取token的页面
@@ -72,7 +72,7 @@ Page({
     }
     // 有token时创建订单
     // 准备请求头参数
-    const header = {Authorization:token};
+    // const header = {Authorization:token};
     // 准备请求体参数
     const order_price = this.data.totalPrice;
     const consignee_addr = this.data.address.all;
@@ -90,7 +90,6 @@ Page({
         url:"/my/orders/create",
         method:"POST",
         data:orderParams,
-        header
       })
     // 5 发起 预支付接口
     const { pay } = await request(
@@ -98,7 +97,6 @@ Page({
         url: "/my/orders/req_unifiedorder", 
         method: "POST", 
         data: { order_number },
-        header 
       });
     // console.log(pay)
     // 发起微信支付
@@ -112,15 +110,19 @@ Page({
         data: { order_number } 
       });
     // 支付成功
-    await showToast({ title: "支付成功" });
-    // 8 支付成功了 跳转到订单页面
+    await showToast("支付成功");
+    // 手动移除缓存中 已经支付了的商品
+    let newCart=wx.getStorageSync("cart");
+    newCart=newCart.filter(v=>!v.checked);
+    wx.setStorageSync("cart", newCart);
+    // 支付成功了 跳转到订单页面
     wx.navigateTo({
       url: '/pages/order/order'
     });
     } catch (error) {
       console.log(error)
       // 支付失败
-      await showToast({ title: "支付失败" })
+      await showToast("支付失败")
     }
   },
 

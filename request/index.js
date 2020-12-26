@@ -3,6 +3,13 @@
 //同时发送异步请求代码的次数
 let ajaxTime = 0;
 export const request=(params)=>{
+    // 判断 url中是否带有 /my/ 请求的是私有的路径 带上header token
+    let header={...params.header};
+    if(params.url.includes("/my/")){
+    // 拼接header 带上token
+    header["Authorization"]=wx.getStorageSync("token");
+    }
+
     ajaxTime++;
     //显示加载中效果
     wx.showLoading({
@@ -15,6 +22,8 @@ export const request=(params)=>{
     return new Promise((resolve,reject)=>{
         wx.request({
             ...params,
+            // 请求头
+            header:header,
             // url拼接
             url:baseUrl + params.url,
             success:(result)=>{
@@ -22,6 +31,10 @@ export const request=(params)=>{
                 resolve(result.data.message);                     
             },
             fail:(err)=>{
+                wx.showToast({
+                    title: err.meta.msg,
+                    icon: 'none',
+                });
                 reject(err)
             },
             // 都会触发的函数，关闭loading图标
