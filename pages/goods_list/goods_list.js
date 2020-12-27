@@ -35,7 +35,9 @@ Page({
   onLoad: function (options) {
     // 获取参数id
     console.log(options);
-    this.QueryParams.cid = options.cid;
+    this.QueryParams.cid = options.cid || '';
+    this.QueryParams.query = options.query || '';
+
     this.getGoodsList()
   },
   //接口需要的参数

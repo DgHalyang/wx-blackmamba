@@ -16,8 +16,13 @@ Page({
    * 页面的初始数据
    */
   data: {
-    // goods: []
+    goods: [],
+    // 取消 按钮 是否显示
+    isFocus:false,
+    inpValue:""
   },
+  //防抖
+  TimeId:-1,
 
   // 输入框的值改变 就会触发的事件
   handleInput(e) {
@@ -25,22 +30,34 @@ Page({
     const { value } = e.detail;
     // 2 检测合法性
     if (!value.trim()) {
-      // this.setData({
-      //   goods: [],
-      //   isFocus: false
-      // })
+      this.setData({
+        goods: [],
+        isFocus: false
+      })
+      clearTimeout(this.TimeId);
       // 值不合法
       return;
     }
-    // 3 准备发送请求获取数据
-    // this.setData({
-    //   isFocus: true
-    // })
-    // clearTimeout(this.TimeId);
-    // this.TimeId = setTimeout(() => {
-    //   this.qsearch(value);
-    // }, 1000);
-    this.qsearch(value);
+    // 3 准备发送请求获取数据 
+    this.setData({
+      isFocus: true
+    })
+
+    //input框防抖处理
+    clearTimeout(this.TimeId);
+    this.TimeId = setTimeout(() => {
+      this.qsearch(value);
+    }, 1000);
+    console.log(this.TimeId)
+  },
+
+  // 点击 取消按钮
+  handleCancel(){
+    this.setData({
+      inpValue:"",
+      isFocus:false,
+      goods:[]
+    })
   },
 
   // 发送请求获取搜索建议 数据
